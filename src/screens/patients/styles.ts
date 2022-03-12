@@ -178,4 +178,62 @@ export const HomeStyles = StyleSheet.create({
         fontSize: 12,
         color: '#444',
     },
+
+    itemContainer: {
+        flexDirection: "row",
+        minHeight: 44,
+        height: 63
+    },
+    leftElementContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 2,
+        paddingLeft: 13
+    },
+    rightSectionContainer: {
+        marginLeft: 18,
+        flexDirection: "row",
+        flex: 20,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: "#515151"
+    },
+    mainTitleContainer: {
+        justifyContent: "center",
+        flexDirection: "column",
+        flex: 1
+    },
+    rightElementContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 0.4
+    },
+    rightTextContainer: {
+        justifyContent: "center",
+        marginRight: 10,
+    },
+    titleStyle: {
+        fontSize: 16
+    },
+    descriptionStyle: {
+        fontSize: 14,
+        color: "#515151"
+    },
+    textStyle: {
+        fontSize: 10,
+    },
+    rightAction: {
+        alignItems: "center",
+        flex: 1,
+        justifyContent: "center"
+    },
+    placeholderContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#fff",
+        height: "100%"
+    },
+    placeholderText: {
+        fontWeight: "700",
+        color: Colors.primary
+    }
 });

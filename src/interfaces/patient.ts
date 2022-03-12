@@ -53,10 +53,10 @@ interface Resource {
     //text: Texts;
     //   extension: Extension[] | null;
     //active: boolean;
-    //  name: Name[];
-    //telecom: Telecom[];
+    name: Name[];
+    telecom: Telecom[];
     //gender: string;
-    //birthDate: string;
+    birthDate: string;
     //address: Address[];
 
 }
@@ -65,6 +65,6 @@ interface Search {
 }
 export interface Patient {
     fullUrl: string;
-    // resource: Resource;
-    // search: Search;
+    resource: Resource;
+    search: Search;
 }
