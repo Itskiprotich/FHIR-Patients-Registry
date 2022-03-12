@@ -69,6 +69,9 @@ export default function HomeScreenClass(props: HomeScreenProps) {
   const showDetails = (patient: Patient) => {
     props.navigation.navigate('PatientDetails', {patient});
   };
+  const addPatient = () => {
+    props.navigation.navigate('AddPatient');
+  };
 
   const renderItem = ({item}: JSONObjectInterface) => {
     return (
@@ -112,9 +115,7 @@ export default function HomeScreenClass(props: HomeScreenProps) {
                 name="share"
                 color={Colors.primary}
                 size={30}
-                onPress={() => {
-                  console.log('Menu Clicked');
-                }}
+                onPress={() => {}}
               />
             </View>
           </View>
@@ -171,6 +172,7 @@ export default function HomeScreenClass(props: HomeScreenProps) {
       </View>
       {patients.length > 0 ? (
         <FlatList
+          style={HomeStyles.flatList}
           data={patients}
           renderItem={renderItem}
           ItemSeparatorComponent={renderSeparator}
@@ -188,6 +190,21 @@ export default function HomeScreenClass(props: HomeScreenProps) {
           </Text>
         </View>
       )}
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          console.log('opening...');
+        }}
+        style={HomeStyles.touchableOpacityStyle}>
+        <Icon
+          name="plus-circle"
+          color={Colors.white}
+          size={35}
+          onPress={() => {
+            addPatient();
+          }}
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

@@ -5,6 +5,7 @@ import {StackParamList} from '../constants/routes';
 import {Colors} from '../constants/colors';
 import HomeScreen from '../screens/patients';
 import PatientDetails from '../screens/patients/details';
+import {AddPatient} from '../screens/patients/add';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -59,7 +60,22 @@ const AuthStack = () => {
         }}
         component={PatientDetails}
       />
+      <Stack.Screen
+        name="AddPatient"
+        options={{
+          title: 'New Patient',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.primary,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#fff',
+        }}
+        component={AddPatient}
+      />
     </Stack.Navigator>
+
+    //
   );
 };
 

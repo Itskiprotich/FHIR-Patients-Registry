@@ -258,5 +258,28 @@ export const HomeStyles = StyleSheet.create({
     body: {
         paddingLeft: 14,
         margin: 15,
-    }
+    },
+    touchableOpacityStyle: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 30,
+        borderRadius: 50,
+        backgroundColor: Colors.primary
+    },
+    floatingButtonStyle: {
+        resizeMode: 'contain',
+        width: 50,
+        height: 50,
+    },
+    flatList: {
+        paddingBottom: 50,
+
+    },
+    textLabel: {
+        marginBottom: 5
+    },
 });

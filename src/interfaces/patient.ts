@@ -68,3 +68,24 @@ export interface Patient {
     resource: Resource;
     search: Search;
 }
+
+export interface NewPatient {
+    family: string;
+    given: string;
+    phone: string;
+    gender: string;
+    birthday: string;
+    city: string;
+    country: string;
+    active: boolean;
+}
+export const INITIAL_PATIENT: NewPatient = {
+    family: '',
+    given: '',
+    phone: '',
+    gender: '',
+    birthday: '',
+    city: '',
+    country: '',
+    active: false
+}
