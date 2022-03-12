@@ -49,15 +49,15 @@ interface Address {
 interface Resource {
     resourceType: string;
     id: string;
-    // meta: Meta;
-    //text: Texts;
-    //   extension: Extension[] | null;
-    //active: boolean;
+    meta: Meta;
+    text: Texts;
+    extension: Extension[] | null;
+    active: boolean;
     name: Name[];
     telecom: Telecom[];
-    //gender: string;
+    gender: string;
     birthDate: string;
-    //address: Address[];
+    address: Address[];
 
 }
 interface Search {

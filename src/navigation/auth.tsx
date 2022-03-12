@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {StackParamList} from '../constants/routes';
 import {Colors} from '../constants/colors';
 import HomeScreen from '../screens/patients';
+import PatientDetails from '../screens/patients/details';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -44,6 +45,19 @@ const AuthStack = () => {
           headerTintColor: '#fff',
         }}
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="PatientDetails"
+        options={{
+          title: 'Patient Details',
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.primary,
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#fff',
+        }}
+        component={PatientDetails}
       />
     </Stack.Navigator>
   );

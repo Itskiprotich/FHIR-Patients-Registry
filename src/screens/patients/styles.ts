@@ -4,7 +4,7 @@ import { Colors } from '../../constants/colors';
 export const HomeStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.lightGrey
+        //  backgroundColor: Colors.lightGrey
     },
     headerView: {
         marginTop: 25,
@@ -235,5 +235,28 @@ export const HomeStyles = StyleSheet.create({
     placeholderText: {
         fontWeight: "700",
         color: Colors.primary
+    },
+    label: {
+        flex: 1,
+        fontWeight: '600',
+        fontSize: 12,
+        lineHeight: 35,
+        color: Colors.black,
+    },
+    value: {
+        fontFamily: 'Poppins-Regular',
+        marginTop: 10,
+        color: Colors.black,
+        fontSize: 16,
+        lineHeight: 20,
+        fontWeight: '600',
+        paddingBottom: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.text,
+        marginRight: 40
+    },
+    body: {
+        paddingLeft: 14,
+        margin: 15,
     }
 });

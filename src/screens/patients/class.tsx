@@ -18,6 +18,8 @@ import {HomeScreenProps} from '.';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {JSONObjectInterface} from '../../interfaces/json';
 import {HomeStyles} from './styles';
+import {Patient} from '../../interfaces/patient';
+import {calculateAge, getAvatarInitials} from '../../constants/utils';
 
 export default function HomeScreenClass(props: HomeScreenProps) {
   const {navigation, loadingProfile} = props;
@@ -63,30 +65,14 @@ export default function HomeScreenClass(props: HomeScreenProps) {
   const renderSeparator = () => {
     return <View style={{...AppStyles.separator}} />;
   };
-  const calculateAge = (dob: string) => {
-    const date = new Date(dob);
-    if (!(date instanceof Date)) {
-      return dob;
-    }
-    return `${Math.floor(
-      (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 365),
-    )} Yrs old`;
+
+  const showDetails = (patient: Patient) => {
+    props.navigation.navigate('PatientDetails', {patient});
   };
-  const getAvatarInitials = (textString: string) => {
-    if (!textString) return '';
-    const text = textString.trim();
-    const textSplit = text.split(' ');
-    if (textSplit.length <= 1) return text.charAt(0);
-    const initials =
-      textSplit[0].charAt(0) + textSplit[textSplit.length - 1].charAt(0);
-    return initials;
-  };
+
   const renderItem = ({item}: JSONObjectInterface) => {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          console.log(`clicked`);
-        }}>
+      <TouchableOpacity onPress={() => showDetails(item)}>
         <View style={HomeStyles.itemContainer}>
           <View style={HomeStyles.leftElementContainer}>
             <View style={HomeStyles.placeholderContainer}>
