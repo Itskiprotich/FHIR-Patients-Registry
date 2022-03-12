@@ -1,3 +1,5 @@
+import { Patient } from './patient';
+
 export interface NetworkStatus {
     connected: boolean;
     type: string;
@@ -21,4 +23,5 @@ export interface StateInterface {
     alert: AlertInterface;
     loading: LoadingInterface;
     network: NetworkStatus;
+    patients: Patient[];
 }

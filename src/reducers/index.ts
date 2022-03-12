@@ -6,11 +6,13 @@ import { StateInterface } from '../interfaces';
 import loading from './loading';
 import alert from './alert';
 import network from './network';
+import patients from './patients';
 
 const reducers = combineReducers<StateInterface, Action>({
     alert,
     loading,
     network,
+    patients,
 });
 
 const rootPersistConfig = {

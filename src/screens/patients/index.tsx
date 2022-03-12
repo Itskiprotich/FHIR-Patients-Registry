@@ -2,11 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {RouteProp} from '@react-navigation/native';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {Dispatch} from 'redux';
+import {AnyAction, Dispatch} from 'redux';
 import {StackParamList} from '../../constants/routes';
 import {StateInterface} from '../../interfaces';
 import HomeScreenClass from './class';
-import {clearSession} from '../../actions';
+import {clearSession, sync} from '../../actions';
+import {ThunkDispatch} from 'redux-thunk';
+import {Patient} from '../../interfaces/patient';
 
 type HomeScreenNavigationProp = DrawerNavigationProp<StackParamList, 'Home'>;
 
@@ -19,10 +21,12 @@ interface ExternalProps {
 
 interface StateProps {
   loadingProfile?: boolean;
+  patients: Patient[];
 }
 
 interface ActionProps {
   clearSession: () => void;
+  sync: () => void;
 }
 
 export type HomeScreenProps = ExternalProps & ActionProps & StateProps;
@@ -35,13 +39,20 @@ const mapStateToProps = (state: StateInterface): StateProps => {
   return {
     loadingProfile:
       state.loading.userInit && state.loading.userInit.loadingProfile,
+    patients: state.patients,
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): ActionProps => {
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<StateInterface, any, AnyAction>,
+): ActionProps => {
   return {
-    clearSession: () => dispatch(clearSession()),
+    clearSession: () => {
+      dispatch(clearSession());
+    },
+    sync: () => {
+      dispatch(sync());
+    },
   };
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
