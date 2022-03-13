@@ -30,7 +30,7 @@ in the terminal run the command
 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="500"  height="400" alt="Listings" src="https://github.com/Itskiprotich/Patients-Registration.git/blob/master/screenshots/screen_1.png"> Patients List |  <img width="500"  height="400" alt="Listing Search" src="https://github.com/Itskiprotich/Patients-Registration.git/blob/master/screenshots/screen_2.png"> Patient Details |<img width="500" height="400" alt="Vital Form" src="https://github.com/Itskiprotich/Patients-Registration.git/blob/master/screenshots/screen_3.png"> New Patient| 
+|<img width="500"  height="400" alt="Listings" src="https://github.com/Itskiprotich/Patients-Registration/blob/master/screenshots/screen_1.png"> Patients List |  <img width="500"  height="400" alt="Listing Search" src="https://github.com/Itskiprotich/Patients-Registration/blob/master/screenshots/screen_2.png"> Patient Details |<img width="500" height="400" alt="Vital Form" src="https://github.com/Itskiprotich/Patients-Registration/blob/master/screenshots/screen_3.png"> New Patient| 
 
 # Author
 
