@@ -17,3 +17,10 @@ export const getAvatarInitials = (textString: string) => {
         textSplit[0].charAt(0) + textSplit[textSplit.length - 1].charAt(0);
     return initials;
 };
+
+export const validPhoneNumber = (phonenumber: string) => {
+    if (phonenumber === '' || (phonenumber.startsWith('+254') && phonenumber.length === 13)) {
+        return true;
+    }
+    return false;
+}

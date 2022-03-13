@@ -25,3 +25,7 @@ export interface StateInterface {
     network: NetworkStatus;
     patients: Patient[];
 }
+export interface Option {
+    label: string;
+    value: string;
+}

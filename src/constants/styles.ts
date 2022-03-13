@@ -124,6 +124,10 @@ export const AppStyles = StyleSheet.create({
     cancelButton: {
         backgroundColor: Colors.red2
     },
+    submitButton: {
+
+        backgroundColor: Colors.primary,
+    },
     required: {
         color: Colors.red
     },

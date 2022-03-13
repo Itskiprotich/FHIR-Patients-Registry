@@ -12,8 +12,13 @@ import {StackParamList} from '../../constants/routes';
 import {AppStyles} from '../../constants/styles';
 import {HomeStyles} from './styles';
 import {StateInterface} from '../../interfaces';
-import {clearSession} from '../../actions';
-import {INITIAL_PATIENT, NewPatient} from '../../interfaces/patient';
+import {clearSession, newPatient} from '../../actions';
+import {INITIAL_PATIENT, NewPatient, Patient} from '../../interfaces/patient';
+import Button from '../../common/button';
+import PhoneNumberInput from '../../common/phone';
+import RadioButton from '../../common/radio';
+import {validPhoneNumber} from '../../constants/utils';
+import {DateButton} from '../../common/date';
 
 type HomeScreenNavigationProp = StackNavigationProp<
   StackParamList,
@@ -28,10 +33,12 @@ interface ExternalProps {
 }
 
 interface ActionProps {
-  clearSession: () => void;
+  newPatient: (pa: Patient) => void;
 }
-
-type PatientProps = ExternalProps & ActionProps;
+interface State {
+  pd: Patient;
+}
+type PatientProps = ExternalProps & ActionProps & State;
 
 type patientsKeys =
   | 'family'
@@ -64,6 +71,53 @@ export const AddPatient = (props: PatientProps) => {
     const dep = {...patient};
     dep[name] = value;
     setPatient(dep);
+  };
+
+  const handleDateChange = (value: string | undefined) => {
+    const dep = {...patient};
+    if (value) {
+      const date = new Date(value);
+      const pad = (v: number) => (v < 10 ? `0${v}` : v);
+      dep.birthday = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+        date.getDate(),
+      )}`;
+    } else {
+      dep.birthday = '';
+    }
+    setPatient(dep);
+  };
+  const handleRadioChange = (
+    checked: boolean,
+    value: string,
+    name: radioTypes,
+  ) => {
+    const dep = {...patient};
+    if (checked) {
+      dep[name] = value;
+    } else {
+      dep[name] = value;
+    }
+    setPatient(dep);
+  };
+  const submitData = () => {
+    if (
+      patient.family === '' ||
+      patient.given === '' ||
+      patient.gender === '' ||
+      patient.city === '' ||
+      patient.country === '' ||
+      (patient.phone !== '' && !validPhoneNumber(patient.phone))
+    ) {
+      setValidate(true);
+      return false;
+    }
+    // map data to fhir
+    props.pd.resource.name[0].family = patient.family;
+    props.pd.resource.name[0].given[0] = patient.given;
+    props.pd.resource.gender = patient.gender;
+    props.pd.resource.address[0].city = patient.city;
+    props.pd.resource.address[0].country = patient.country;
+    props.pd.resource.telecom[0].value = patient.phone;
   };
   return (
     <KeyboardAwareScrollView>
@@ -116,6 +170,58 @@ export const AddPatient = (props: PatientProps) => {
               ...AppStyles.textLabel,
               ...HomeStyles.textLabel,
             }}>
+            Phone number
+            <Text style={AppStyles.required}>{` *`}</Text>
+          </Text>
+          <PhoneNumberInput
+            placeholder="Phone number (+254 xxxxxxxxx)"
+            onChangeText={text => handleFieldChange('phone', text)}
+            value={patient.phone}
+            validate={validate}
+          />
+        </View>
+        <View style={AppStyles.formGroup}>
+          <Text
+            style={{
+              ...AppStyles.textLabel,
+              ...HomeStyles.textLabel,
+            }}>
+            Gender
+            <Text style={AppStyles.required}>{` *`}</Text>
+          </Text>
+          <RadioButton
+            options={genderOptions}
+            value={patient.gender}
+            onChange={(checked, value) =>
+              handleRadioChange(checked, value, 'gender')
+            }
+            validate={validate}
+            wrapStyle={{...AppStyles.rowFlex, ...AppStyles.flex1}}
+          />
+        </View>
+
+        <View style={AppStyles.formGroup}>
+          <Text
+            style={{
+              ...AppStyles.textLabel,
+              ...AppStyles.formLabel,
+            }}>
+            Date of birth <Text style={AppStyles.required}>*</Text>
+          </Text>
+          <DateButton
+            value={patient.birthday}
+            mode="date"
+            max={new Date()}
+            onChange={handleDateChange}
+            validate={validate}
+          />
+        </View>
+        <View style={AppStyles.formGroup}>
+          <Text
+            style={{
+              ...AppStyles.textLabel,
+              ...HomeStyles.textLabel,
+            }}>
             City
             <Text style={AppStyles.required}>{` *`}</Text>
           </Text>
@@ -152,6 +258,19 @@ export const AddPatient = (props: PatientProps) => {
             value={patient.country}
           />
         </View>
+        <View
+          style={{
+            ...AppStyles.rowFlex,
+            ...AppStyles.innerContainer,
+            ...HomeStyles.subContainer,
+          }}>
+          <Button
+            label={'Submit'}
+            onPress={submitData}
+            style={{...AppStyles.submitButton, ...{flex: 1}}}
+            textSyle={AppStyles.whiteColor}
+          />
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -161,9 +280,7 @@ const mapDispatchToProps = (
   dispatch: ThunkDispatch<StateInterface, any, Action>,
 ): ActionProps => {
   return {
-    clearSession: () => {
-      dispatch(clearSession());
-    },
+    newPatient: (pa: Patient) => dispatch(newPatient(pa)),
   };
 };
 

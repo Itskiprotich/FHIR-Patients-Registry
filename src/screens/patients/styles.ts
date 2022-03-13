@@ -282,4 +282,8 @@ export const HomeStyles = StyleSheet.create({
     textLabel: {
         marginBottom: 5
     },
+    subContainer: {
+        marginRight: 10,
+        marginLeft: 10
+    },
 });

@@ -5,6 +5,7 @@ import { LOADING, NETWORK_ACTIONS, SET_ALERT, USER_ACTIONS } from './types';
 import * as API from './api';
 import { Patient } from '../interfaces/patient';
 
+const offLineMsg = 'You are offline, an active internet connection is required';
 export type ThunkDispatchAction = ThunkDispatch<StateInterface, any, Action>;
 
 export const setLoading = (loading: LoadingInterface) => (
@@ -60,3 +61,25 @@ export const loadPatients = () => {
 
     }
 };
+export const newPatient = (pa: Patient) => {
+    return (dispatch: ThunkDispatchAction, getState: () => StateInterface) => {
+        if (!isOnline(getState())) {
+            dispatch(setAlert({
+                visible: true,
+                message: offLineMsg
+            }));
+            return;
+        }
+        dispatch(setLoading({ loading: true, message: 'adding Patient...' }));
+
+        // const addDependentPromise = UserAPI.addDependent(dependent, user.token);
+        // addDependentPromise.then(response => response.json()).then(json => {
+        //     dispatch(setLoading({ loading: false, message: '' }));
+        //     dispatch(setAlert({ visible: true, message: json.message }));
+        //     if (json.status !== 'Failure') {
+        //         dispatch(dependentAdded(dependent));
+        //     }
+        // })
+
+    }
+}
