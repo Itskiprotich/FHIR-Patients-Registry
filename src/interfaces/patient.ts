@@ -93,7 +93,7 @@ export interface Patient {
 export const INITIAL_PATIENT: Patient = {
     fullUrl: '',
     resource: {
-        resourceType: '',
+        resourceType: 'Patient',
         id: '',
         active: true,
         name: [

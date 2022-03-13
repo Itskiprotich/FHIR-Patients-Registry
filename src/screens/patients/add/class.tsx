@@ -46,6 +46,7 @@ export default function AddPatientClass(props: PatientProps) {
 
   const handleFieldChange = (name: patientsKeys, value: string) => {
     const dep = {...patient};
+    dep.resource.resourceType = 'Patient';
     if (name === 'resource.name[0].family') {
       dep.resource.name[0].family = value;
     }
@@ -115,11 +116,13 @@ export default function AddPatientClass(props: PatientProps) {
       setValidate(true);
       return false;
     }
-
+    const dep = {...patient};
+    dep.resource.resourceType = 'Patient';
+    setPatient(dep);
     props.submitPatient({
       ...patient,
     });
-    // props.navigation.pop();
+    props.navigation.goBack();
   };
   return (
     <KeyboardAwareScrollView>

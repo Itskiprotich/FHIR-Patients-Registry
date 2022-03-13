@@ -37,7 +37,9 @@ export const setLoadingPatients = () => (
 export const setLoadedPatients = () => (
     { type: LOADING.LOADED_PATIENT }
 );
-
+export const patientAdded = (patient: Patient) => (
+    { type: USER_ACTIONS.PATIENTS_ADDED, patient }
+);
 
 export const sync = () => {
     return (dispatch: ThunkDispatchAction, getState: () => StateInterface) => {
@@ -73,14 +75,14 @@ export const submitPatient = (patient: Patient) => {
         }
         dispatch(setLoading({ loading: true, message: 'adding Patient...' }));
 
-        // const addDependentPromise = UserAPI.addDependent(dependent, user.token);
-        // addDependentPromise.then(response => response.json()).then(json => {
-        //     dispatch(setLoading({ loading: false, message: '' }));
-        //     dispatch(setAlert({ visible: true, message: json.message }));
-        //     if (json.status !== 'Failure') {
-        //         dispatch(dependentAdded(dependent));
-        //     }
-        // })
+        const addPatientPromise = API.addPatient(patient);
+        addPatientPromise.then(response => response.json()).then(json => {
+            dispatch(setLoading({ loading: false, message: '' }));
+            console.log(json)
+            dispatch(setAlert({ visible: true, message: json.text.status }));
+            dispatch(loadPatients());
+
+        })
 
     }
 }
