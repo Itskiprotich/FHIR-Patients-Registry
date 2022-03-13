@@ -16,6 +16,7 @@ import {AppStyles} from './src/constants/styles';
 import AuthStack from './src/navigation/auth';
 import {Colors} from './src/constants/colors';
 import {setAlert, updateNetworkStatus} from './src/actions';
+import LoadingComponent from './src/common/loading';
 
 interface State {
   loading: LoadingInterface;
@@ -87,7 +88,7 @@ class App extends React.Component<AppProps, State> {
           <NavigationContainer>
             <AuthStack />
           </NavigationContainer>
-          {/* <LoadingComponent loading={this.state.loading} /> */}
+          <LoadingComponent loading={this.state.loading} />
         </SafeAreaView>
       </>
     );

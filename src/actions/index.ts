@@ -61,7 +61,8 @@ export const loadPatients = () => {
 
     }
 };
-export const newPatient = (pa: Patient) => {
+export const submitPatient = (patient: Patient) => {
+
     return (dispatch: ThunkDispatchAction, getState: () => StateInterface) => {
         if (!isOnline(getState())) {
             dispatch(setAlert({

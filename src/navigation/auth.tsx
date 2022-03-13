@@ -5,7 +5,7 @@ import {StackParamList} from '../constants/routes';
 import {Colors} from '../constants/colors';
 import HomeScreen from '../screens/patients';
 import PatientDetails from '../screens/patients/details';
-import {AddPatient} from '../screens/patients/add';
+import AddPatient from '../screens/patients/add';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 

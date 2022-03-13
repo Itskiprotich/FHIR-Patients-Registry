@@ -49,9 +49,9 @@ interface Address {
 interface Resource {
     resourceType: string;
     id: string;
-    meta: Meta;
-    text: Texts;
-    extension: Extension[] | null;
+    // meta: Meta;
+    // text: Texts;
+    //  extension: Extension[] | null;
     active: boolean;
     name: Name[];
     telecom: Telecom[];
@@ -69,23 +69,59 @@ export interface Patient {
     search: Search;
 }
 
-export interface NewPatient {
-    family: string;
-    given: string;
-    phone: string;
-    gender: string;
-    birthday: string;
-    city: string;
-    country: string;
-    active: boolean;
-}
-export const INITIAL_PATIENT: NewPatient = {
-    family: '',
-    given: '',
-    phone: '',
-    gender: '',
-    birthday: '',
-    city: '',
-    country: '',
-    active: false
+// export interface NewPatient {
+//     family: string;
+//     given: string;
+//     phone: string;
+//     gender: string;
+//     birthday: string;
+//     city: string;
+//     country: string;
+//     active: string;
+// }
+// export const INITIAL_PATIENT: NewPatient = {
+//     family: '',
+//     given: '',
+//     phone: '',
+//     gender: '',
+//     birthday: '',
+//     city: '',
+//     country: '',
+//     active: ''
+// }
+
+export const INITIAL_PATIENT: Patient = {
+    fullUrl: '',
+    resource: {
+        resourceType: '',
+        id: '',
+        active: true,
+        name: [
+            {
+                use: '',
+                family: '',
+                given: []
+
+            }
+        ],
+        telecom: [
+            {
+                system: '',
+                value: '',
+                use: '',
+            }
+        ],
+        gender: '',
+        birthDate: '',
+        address: [
+            {
+                city: '',
+                state: '',
+                country: ''
+            }
+        ]
+    },
+    search: {
+        mode: ''
+    }
 }

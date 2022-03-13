@@ -2,62 +2,39 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Alert} from 'react-native';
 // @ts-ignore
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-import {ThunkDispatch} from 'redux-thunk';
-import {Action} from 'redux';
-import {connect} from 'react-redux';
-import {StackNavigationProp} from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {RouteProp} from '@react-navigation/native';
-import {StackParamList} from '../../constants/routes';
-import {AppStyles} from '../../constants/styles';
-import {HomeStyles} from './styles';
-import {StateInterface} from '../../interfaces';
-import {clearSession, newPatient} from '../../actions';
-import {INITIAL_PATIENT, NewPatient, Patient} from '../../interfaces/patient';
-import Button from '../../common/button';
-import PhoneNumberInput from '../../common/phone';
-import RadioButton from '../../common/radio';
-import {validPhoneNumber} from '../../constants/utils';
-import {DateButton} from '../../common/date';
-
-type HomeScreenNavigationProp = StackNavigationProp<
-  StackParamList,
-  'AddPatient'
->;
-
-type HomeScreenRouteProp = RouteProp<StackParamList, 'AddPatient'>;
-
-interface ExternalProps {
-  navigation: HomeScreenNavigationProp;
-  route: HomeScreenRouteProp;
-}
-
-interface ActionProps {
-  newPatient: (pa: Patient) => void;
-}
-interface State {
-  pd: Patient;
-}
-type PatientProps = ExternalProps & ActionProps & State;
+import {AppStyles} from '../../../constants/styles';
+import {HomeStyles} from '../styles';
+import {INITIAL_PATIENT, Patient} from '../../../interfaces/patient';
+import Button from '../../../common/button';
+import PhoneNumberInput from '../../../common/phone';
+import RadioButton from '../../../common/radio';
+import {validPhoneNumber} from '../../../constants/utils';
+import {DateButton} from '../../../common/date';
+import {PatientProps} from '.';
 
 type patientsKeys =
-  | 'family'
-  | 'given'
-  | 'phone'
-  | 'birthday'
-  | 'city'
-  | 'country';
+  | 'resource.name[0].family'
+  | 'resource.name[0].given[0]'
+  | 'resource.telecom[0].value'
+  | 'resource.birthDate'
+  | 'resource.address[0].city'
+  | 'resource.address[0].country';
 
-type radioTypes = 'gender';
+type radioTypes = 'resource.gender' | 'resource.active ';
 
 const genderOptions = [
   {label: 'Male', value: 'male'},
   {label: 'Female', value: 'female'},
 ];
 
-export const AddPatient = (props: PatientProps) => {
-  const {navigation} = props;
-  const [patient, setPatient] = useState<NewPatient>({...INITIAL_PATIENT});
+const activeOptions = [
+  {label: 'Active', value: 'true'},
+  {label: 'Inactive', value: 'false'},
+];
+
+export default function AddPatientClass(props: PatientProps) {
+  const {navigation, route} = props;
+  const [patient, setPatient] = useState<Patient>({...INITIAL_PATIENT});
   const [validate, setValidate] = useState(false);
 
   React.useLayoutEffect(() => {
@@ -69,7 +46,24 @@ export const AddPatient = (props: PatientProps) => {
 
   const handleFieldChange = (name: patientsKeys, value: string) => {
     const dep = {...patient};
-    dep[name] = value;
+    if (name === 'resource.name[0].family') {
+      dep.resource.name[0].family = value;
+    }
+    if (name === 'resource.name[0].given[0]') {
+      dep.resource.name[0].given[0] = value;
+    }
+    if (name === 'resource.telecom[0].value') {
+      dep.resource.telecom[0].value = value;
+    }
+    if (name === 'resource.birthDate') {
+      dep.resource.birthDate = value;
+    }
+    if (name === 'resource.address[0].city') {
+      dep.resource.address[0].city = value;
+    }
+    if (name === 'resource.address[0].country') {
+      dep.resource.address[0].country = value;
+    }
     setPatient(dep);
   };
 
@@ -78,11 +72,11 @@ export const AddPatient = (props: PatientProps) => {
     if (value) {
       const date = new Date(value);
       const pad = (v: number) => (v < 10 ? `0${v}` : v);
-      dep.birthday = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-        date.getDate(),
-      )}`;
+      dep.resource.birthDate = `${date.getFullYear()}-${pad(
+        date.getMonth() + 1,
+      )}-${pad(date.getDate())}`;
     } else {
-      dep.birthday = '';
+      dep.resource.birthDate = '';
     }
     setPatient(dep);
   };
@@ -93,31 +87,39 @@ export const AddPatient = (props: PatientProps) => {
   ) => {
     const dep = {...patient};
     if (checked) {
-      dep[name] = value;
+      if (name === 'resource.gender') {
+        dep.resource.gender = value;
+      } else {
+        dep.resource.active = value === 'true' ? true : false;
+      }
     } else {
-      dep[name] = value;
+      if (name === 'resource.gender') {
+        dep.resource.gender = value;
+      } else {
+        dep.resource.active = value === 'true' ? true : false;
+      }
     }
     setPatient(dep);
   };
   const submitData = () => {
     if (
-      patient.family === '' ||
-      patient.given === '' ||
-      patient.gender === '' ||
-      patient.city === '' ||
-      patient.country === '' ||
-      (patient.phone !== '' && !validPhoneNumber(patient.phone))
+      patient.resource.name[0].family === '' ||
+      patient.resource.name[0].given[0] === '' ||
+      patient.resource.gender === '' ||
+      patient.resource.address[0].city === '' ||
+      patient.resource.address[0].country === '' ||
+      patient.resource.birthDate === '' ||
+      (patient.resource.telecom[0].value !== '' &&
+        !validPhoneNumber(patient.resource.telecom[0].value))
     ) {
       setValidate(true);
       return false;
     }
-    // map data to fhir
-    props.pd.resource.name[0].family = patient.family;
-    props.pd.resource.name[0].given[0] = patient.given;
-    props.pd.resource.gender = patient.gender;
-    props.pd.resource.address[0].city = patient.city;
-    props.pd.resource.address[0].country = patient.country;
-    props.pd.resource.telecom[0].value = patient.phone;
+
+    props.submitPatient({
+      ...patient,
+    });
+    // props.navigation.pop();
   };
   return (
     <KeyboardAwareScrollView>
@@ -135,12 +137,14 @@ export const AddPatient = (props: PatientProps) => {
             placeholder="e.g John"
             style={{
               ...AppStyles.textInput,
-              ...(patient.family === '' && validate
+              ...(patient.resource.name[0].family === '' && validate
                 ? AppStyles.errorTextInput
                 : {}),
             }}
-            onChangeText={text => handleFieldChange('family', text)}
-            value={patient.family}
+            onChangeText={text =>
+              handleFieldChange('resource.name[0].family', text)
+            }
+            value={patient.resource.name[0].family}
           />
         </View>
         <View style={AppStyles.formGroup}>
@@ -156,12 +160,14 @@ export const AddPatient = (props: PatientProps) => {
             placeholder="e.g Doe"
             style={{
               ...AppStyles.textInput,
-              ...(patient.given === '' && validate
+              ...(patient.resource.name[0].given[0] === '' && validate
                 ? AppStyles.errorTextInput
                 : {}),
             }}
-            onChangeText={text => handleFieldChange('given', text)}
-            value={patient.given}
+            onChangeText={text =>
+              handleFieldChange('resource.name[0].given[0]', text)
+            }
+            value={patient.resource.name[0].given[0]}
           />
         </View>
         <View style={AppStyles.formGroup}>
@@ -175,8 +181,10 @@ export const AddPatient = (props: PatientProps) => {
           </Text>
           <PhoneNumberInput
             placeholder="Phone number (+254 xxxxxxxxx)"
-            onChangeText={text => handleFieldChange('phone', text)}
-            value={patient.phone}
+            onChangeText={text =>
+              handleFieldChange('resource.telecom[0].value', text)
+            }
+            value={patient.resource.telecom[0].value}
             validate={validate}
           />
         </View>
@@ -191,9 +199,9 @@ export const AddPatient = (props: PatientProps) => {
           </Text>
           <RadioButton
             options={genderOptions}
-            value={patient.gender}
+            value={patient.resource.gender}
             onChange={(checked, value) =>
-              handleRadioChange(checked, value, 'gender')
+              handleRadioChange(checked, value, 'resource.gender')
             }
             validate={validate}
             wrapStyle={{...AppStyles.rowFlex, ...AppStyles.flex1}}
@@ -209,7 +217,7 @@ export const AddPatient = (props: PatientProps) => {
             Date of birth <Text style={AppStyles.required}>*</Text>
           </Text>
           <DateButton
-            value={patient.birthday}
+            value={patient.resource.birthDate}
             mode="date"
             max={new Date()}
             onChange={handleDateChange}
@@ -229,12 +237,14 @@ export const AddPatient = (props: PatientProps) => {
             placeholder="e.g Nairobi"
             style={{
               ...AppStyles.textInput,
-              ...(patient.city === '' && validate
+              ...(patient.resource.address[0].city === '' && validate
                 ? AppStyles.errorTextInput
                 : {}),
             }}
-            onChangeText={text => handleFieldChange('city', text)}
-            value={patient.city}
+            onChangeText={text =>
+              handleFieldChange('resource.address[0].city', text)
+            }
+            value={patient.resource.address[0].city}
           />
         </View>
         <View style={AppStyles.formGroup}>
@@ -250,12 +260,33 @@ export const AddPatient = (props: PatientProps) => {
             placeholder="e.g Kenya"
             style={{
               ...AppStyles.textInput,
-              ...(patient.country === '' && validate
+              ...(patient.resource.address[0].country === '' && validate
                 ? AppStyles.errorTextInput
                 : {}),
             }}
-            onChangeText={text => handleFieldChange('country', text)}
-            value={patient.country}
+            onChangeText={text =>
+              handleFieldChange('resource.address[0].country', text)
+            }
+            value={patient.resource.address[0].country}
+          />
+        </View>
+        <View style={AppStyles.formGroup}>
+          <Text
+            style={{
+              ...AppStyles.textLabel,
+              ...HomeStyles.textLabel,
+            }}>
+            Status
+            <Text style={AppStyles.required}>{` *`}</Text>
+          </Text>
+          <RadioButton
+            options={activeOptions}
+            value={patient.resource.active ? 'true' : 'false'}
+            onChange={(checked, value) =>
+              handleRadioChange(checked, value, 'resource.active ')
+            }
+            validate={validate}
+            wrapStyle={{...AppStyles.rowFlex, ...AppStyles.flex1}}
           />
         </View>
         <View
@@ -274,14 +305,4 @@ export const AddPatient = (props: PatientProps) => {
       </View>
     </KeyboardAwareScrollView>
   );
-};
-
-const mapDispatchToProps = (
-  dispatch: ThunkDispatch<StateInterface, any, Action>,
-): ActionProps => {
-  return {
-    newPatient: (pa: Patient) => dispatch(newPatient(pa)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(AddPatient);
+}
