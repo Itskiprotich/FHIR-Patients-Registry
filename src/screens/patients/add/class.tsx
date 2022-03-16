@@ -122,6 +122,7 @@ export default function AddPatientClass(props: PatientProps) {
     props.submitPatient({
       ...patient,
     });
+    setPatient({...INITIAL_PATIENT});
     props.navigation.goBack();
   };
   return (
@@ -249,6 +250,11 @@ export default function AddPatientClass(props: PatientProps) {
             }
             value={patient.resource.address[0].city}
           />
+
+          <Text
+            style={
+              AppStyles.required
+            }>{`For data sync please don't change the city name`}</Text>
         </View>
         <View style={AppStyles.formGroup}>
           <Text

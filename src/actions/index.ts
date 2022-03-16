@@ -4,6 +4,7 @@ import { StateInterface, LoadingInterface, AlertInterface, NetworkStatus } from 
 import { LOADING, NETWORK_ACTIONS, SET_ALERT, USER_ACTIONS } from './types';
 import * as API from './api';
 import { Patient } from '../interfaces/patient';
+import { User } from '../interfaces/user';
 
 const offLineMsg = 'You are offline, an active internet connection is required';
 export type ThunkDispatchAction = ThunkDispatch<StateInterface, any, Action>;
@@ -47,6 +48,18 @@ export const sync = () => {
     }
 };
 
+export const signIn = (user: User) => {
+    return (dispatch: ThunkDispatchAction, getState: () => StateInterface) => {
+        if (!isOnline(getState())) {
+            dispatch(setAlert({
+                visible: true,
+                message: offLineMsg
+            }));
+            return;
+        }
+    }
+};
+
 export const loadPatients = () => {
     return (dispatch: ThunkDispatchAction, getState: () => StateInterface) => {
         dispatch(setLoadingPatients());
@@ -55,7 +68,13 @@ export const loadPatients = () => {
             dispatch(setLoadedPatients());
             console.log(`Success::::`);
             console.log(json.entry);
-            dispatch(setPatients(json.entry));
+            if (json.entry) {
+                dispatch(setPatients(json.entry));
+            } else {
+                console.log('No record found');
+                dispatch(setPatients([])); //Clear current records
+
+            }
         }).catch(err => {
             dispatch(setLoadedPatients());
             console.log(`Error Encountered:::: ${err}`);

@@ -69,26 +69,6 @@ export interface Patient {
     search: Search;
 }
 
-// export interface NewPatient {
-//     family: string;
-//     given: string;
-//     phone: string;
-//     gender: string;
-//     birthday: string;
-//     city: string;
-//     country: string;
-//     active: string;
-// }
-// export const INITIAL_PATIENT: NewPatient = {
-//     family: '',
-//     given: '',
-//     phone: '',
-//     gender: '',
-//     birthday: '',
-//     city: '',
-//     country: '',
-//     active: ''
-// }
 
 export const INITIAL_PATIENT: Patient = {
     fullUrl: '',
@@ -115,7 +95,7 @@ export const INITIAL_PATIENT: Patient = {
         birthDate: '',
         address: [
             {
-                city: '',
+                city: 'IMEJACITY',
                 state: '',
                 country: ''
             }
